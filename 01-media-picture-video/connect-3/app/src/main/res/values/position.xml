@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="position_arr">
+		<item>@id/position0</item>
+		<item>@id/position1</item>
+		<item>@id/position2</item>
+		<item>@id/position3</item>
+		<item>@id/position4</item>
+		<item>@id/position5</item>
+		<item>@id/position6</item>
+		<item>@id/position7</item>
+		<item>@id/position8</item>
+    </array>
+</resources>

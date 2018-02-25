@@ -1,5 +1,6 @@
 package com.example.atfoc.connect_3;
 
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.PopupWindow;
 public class MainActivity extends AppCompatActivity {
 
 	private Game game;
+	private ImageView[] ivs;
+
 	@SuppressWarnings("unchecked")
 	private View.OnClickListener imageViewClickListener = new View.OnClickListener()
 	{
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 			if(game.isEnd())
 			{
+
 				LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
 				View v = li.inflate(R.layout.popup_layout, null);
@@ -67,13 +71,22 @@ public class MainActivity extends AppCompatActivity {
 				final PopupWindow pw = new PopupWindow(v, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 				ImageView winner = v.findViewById(R.id.popupWinnerImage);
-				winner.setImageResource(game.winner() == 0 ? R.drawable.blue_tocken : R.drawable.red_tocken);
+
+				if(-1 == game.winner())
+				{
+					winner.setImageResource(R.color.colorPrimaryDark);
+				}
+				else
+				{
+					winner.setImageResource(game.winner() == 0 ? R.drawable.blue_tocken : R.drawable.red_tocken);
+				}
 
 				((Button)v.findViewById(R.id.popupBtnClose)).setOnClickListener(new View.OnClickListener()
 				{
 					@Override
 					public void onClick(View view)
 					{
+						((Button)findViewById(R.id.btnReset)).animate().alpha(1f).setDuration(500);
 						pw.dismiss();
 					}
 				});
@@ -87,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 						pw.dismiss();
 					}
 				});
-				pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+				showWindow(pw, view);
 			}
 		}
 	};
@@ -98,75 +111,53 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 		ImageView iv = null;
 		game = new Game();
+		ivs = new ImageView[9];
 
-        iv  = findViewById(R.id.position0);
-        iv.setOnClickListener(imageViewClickListener);
-    	iv.setTag(Pair.create(0,0));
+		TypedArray position = getResources().obtainTypedArray(R.array.position_arr);
 
-		iv = findViewById(R.id.position1);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(0,1));
+		for(int i = 0; i < position.length(); ++i)
+		{
+			iv = findViewById(position.getResourceId(i,-1));
+			iv.setOnClickListener(imageViewClickListener);
+			iv.setTag(Pair.create(i/3, i % 3));
+			ivs[i] = iv;
+		}
 
-		iv = findViewById(R.id.position2);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(0,2));
+		((Button)findViewById(R.id.btnReset)).setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				reset();
+				view.animate().alpha(0f).setDuration(500);
+			}
+		});
 
-		iv = findViewById(R.id.position3);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(1,0));
 
-		iv = findViewById(R.id.position4);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(1,1));
-
-		iv = findViewById(R.id.position5);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(1,2));
-
-		iv = findViewById(R.id.position6);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(2,0));
-
-		iv = findViewById(R.id.position7);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(2,1));
-
-		iv = findViewById(R.id.position8);
-		iv.setOnClickListener(imageViewClickListener);
-		iv.setTag(Pair.create(2,2));
 	}
 	private void reset()
 	{
-		ImageView iv = null;
 
-		iv = findViewById(R.id.position0);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position1);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position2);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position3);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position4);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position5);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position6);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position7);
-		iv.setImageResource(R.color.white);
-
-		iv = findViewById(R.id.position8);
-		iv.setImageResource(R.color.white);
+		for(ImageView iv : ivs)
+		{
+			iv.setImageResource(R.color.white);
+			iv.setOnClickListener(imageViewClickListener);
+		}
 
 		game.reset();
 		((ImageView)findViewById(R.id.nextPlayer)).setImageResource(R.drawable.blue_tocken);
 	}
+
+	private void showWindow(PopupWindow pw, View view)
+	{
+		for(ImageView iv : ivs)
+		{
+			iv.setOnClickListener(null);
+		}
+
+		pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+	}
 }
+
+

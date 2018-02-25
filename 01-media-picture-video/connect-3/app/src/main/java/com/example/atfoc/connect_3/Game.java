@@ -10,6 +10,7 @@ public class Game
 	private int currPlayer;
 	private boolean end;
 	private int game_winner;
+	private int fieldLeft;
 	private static int numRowCol = 3;
 
 	public Game()
@@ -19,6 +20,7 @@ public class Game
 		currPlayer = 0;
 		end = false;
 		game_winner = -1;
+		fieldLeft = 9;
 	}
 
 	public int set(int x, int y)
@@ -33,6 +35,7 @@ public class Game
 			int tmp = currPlayer;
 			board[x][y] = currPlayer;
 			currPlayer = (0 == currPlayer) ? 1 : 0;
+			--fieldLeft;
 			return tmp;
 		}
 		return -1;
@@ -44,7 +47,7 @@ public class Game
 		{
 			end = true;
 		}
-		return end;
+		return end || fieldLeft == 0;
 	}
 
 	public void reset()
@@ -59,6 +62,7 @@ public class Game
 		end = false;
 		currPlayer = 0;
 		game_winner = -1;
+		fieldLeft = 9;
 	}
 
 	public int winner()

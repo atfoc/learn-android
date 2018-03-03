@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Activity_life_cycle</string>
+    <string name="btnClickMeText">click me</string>
+</resources>

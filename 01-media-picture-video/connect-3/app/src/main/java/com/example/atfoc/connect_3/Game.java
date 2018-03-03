@@ -1,10 +1,12 @@
 package com.example.atfoc.connect_3;
 
+import java.io.Serializable;
+
 /**
  * Created by atfoc on 2/24/18.
  */
 
-public class Game
+public class Game implements Serializable
 {
 	private int[][] board;
 	private int currPlayer;
@@ -192,4 +194,19 @@ public class Game
 		}
 		return -1;
 	}
+
+	int getPlayerAt(int x, int y)
+	{
+		if(x < 0 || x > numRowCol-1 || y < 0 || y > numRowCol-1)
+		{
+			return -1;
+		}
+		return board[x][y];
+	}
+
+	int getNextPlayer()
+	{
+		return currPlayer;
+	}
+
 }

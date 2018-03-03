@@ -16,8 +16,21 @@ import android.widget.PopupWindow;
 
 public class MainActivity extends AppCompatActivity {
 
+	private static String GAME_BUNDLE_KEY = "GAME_BUNDLE_KEY";
+	private static String BTN_RESET_KEY = "BTN_RESET_KEY";
+
 	private Game game;
 	private ImageView[] ivs;
+	private  Button btnReset;
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putSerializable(GAME_BUNDLE_KEY, game);
+
+		outState.putFloat(BTN_RESET_KEY, btnReset.getAlpha());
+	}
 
 	@SuppressWarnings("unchecked")
 	private View.OnClickListener imageViewClickListener = new View.OnClickListener()
@@ -110,20 +123,60 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 		ImageView iv = null;
-		game = new Game();
+		Drawable[] tmp = null;
+
+		if(null != savedInstanceState)
+		{
+			game = (Game)savedInstanceState.getSerializable(GAME_BUNDLE_KEY);
+		}
+		else
+		{
+			game = new Game();
+		}
+
+		((ImageView)findViewById(R.id.nextPlayer)).setImageResource(game.getNextPlayer() == 1 ? R.drawable.red_tocken : R.drawable.blue_tocken);
 		ivs = new ImageView[9];
 
 		TypedArray position = getResources().obtainTypedArray(R.array.position_arr);
 
+		int tmpPlayer = -1;
+
 		for(int i = 0; i < position.length(); ++i)
 		{
 			iv = findViewById(position.getResourceId(i,-1));
-			iv.setOnClickListener(imageViewClickListener);
+			if(!game.isEnd())
+			{
+				iv.setOnClickListener(imageViewClickListener);
+			}
+
 			iv.setTag(Pair.create(i/3, i % 3));
 			ivs[i] = iv;
+			tmpPlayer = game.getPlayerAt(i/3, i%3);
+
+			if(null != savedInstanceState)
+			{
+				if(0 == tmpPlayer)
+				{
+					iv.setImageResource(R.drawable.blue_tocken);
+				}
+				else if(1 == tmpPlayer)
+				{
+					iv.setImageResource(R.drawable.red_tocken);
+				}
+
+				iv.setBackgroundColor(getResources().getColor(R.color.white));
+			}
+
 		}
 
-		((Button)findViewById(R.id.btnReset)).setOnClickListener(new View.OnClickListener()
+		btnReset = findViewById(R.id.btnReset);
+
+		if(null != savedInstanceState)
+		{
+			btnReset.setAlpha(savedInstanceState.getFloat(BTN_RESET_KEY, 0));
+		}
+
+		btnReset.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)

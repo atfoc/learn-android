@@ -1,27 +1,33 @@
 package com.example.atfoc.criminalintent;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.Console;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment
 {
 
 	private static String sTAG_UUID_ARG = CrimeFragment.class.getName() + ".TAG.UUID.ARG";
-
 
 	private Crime mCrime;
 
@@ -111,6 +117,37 @@ public class CrimeFragment extends Fragment
 		});
 
 
+		mBtnDate.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				FragmentManager fm = getActivity().getFragmentManager();
+
+				DateTimePicker f = DateTimePicker.newInstance(mCrime.getDate());
+
+				f.setTargetFragment(CrimeFragment.this, 0);
+				f.show(fm, DateTimePicker.class.getName());
+			}
+		});
 		return v;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if(0 == requestCode)
+		{
+			if(Activity.RESULT_OK ==  resultCode)
+			{
+				Date d = (Date)data.getSerializableExtra(CrimePickDateFragment.sTAG_DATE_RET);
+				mCrime.setDate(d);
+				mBtnDate.setText(mCrime.getFormatDate());
+			}
+			else if(Activity.RESULT_CANCELED == resultCode)
+			{
+				Log.d("Debug", "user canceld");
+			}
+		}
 	}
 }

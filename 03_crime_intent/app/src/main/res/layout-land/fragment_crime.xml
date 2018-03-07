@@ -36,7 +36,6 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:id="@+id/fragment_crime_btn_date_value"
                 android:layout_weight="1"
                 />

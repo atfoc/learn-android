@@ -6,4 +6,11 @@
     <string name="fragment_crime_tv_title_text">Title</string>
     <string name="fragment_crime_tv_detail_text">Details</string>
     <string name="fragment_crime_cb_solved_text">Solved?</string>
+    <string name="dialog_fragment_crime_date_picker_title">Crime Date</string>
+    <string name="dialog_fragment_date_picker_btn_close_text">Close</string>
+    <string name="dialog_fragment_date_picker_btn_accept_text">Accept</string>
+    <string-array name="dialog_fragment_date_time_picker_array">
+        <item>Time</item>
+        <item>Date</item>
+    </string-array>
 </resources>

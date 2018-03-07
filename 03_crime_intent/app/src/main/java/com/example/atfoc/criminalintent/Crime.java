@@ -18,7 +18,7 @@ public class Crime
 		mId = UUID.randomUUID();
 		mDate = new Date();
 		mSolved = false;
-		df = new SimpleDateFormat("dd.mm.yyyy.");
+		df = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
 	}
 
 	public void setTitle(String mTitle)

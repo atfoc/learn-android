@@ -21,7 +21,8 @@ public class CrimeLab
 
 	public static CrimeLab getInstance(Context c)
 	{
-		return (null == sCrimeLab) ? new CrimeLab(c) : sCrimeLab;
+		sCrimeLab = (null == sCrimeLab) ? new CrimeLab(c) : sCrimeLab;
+		return sCrimeLab;
 	}
 
 	public void addCrime(Crime c)

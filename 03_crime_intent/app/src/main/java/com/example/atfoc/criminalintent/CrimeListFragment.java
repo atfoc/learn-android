@@ -2,6 +2,7 @@ package com.example.atfoc.criminalintent;
 
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,13 @@ public class CrimeListFragment extends ListFragment
 	private Context mContext;
 
 	@Override
+	public void onResume()
+	{
+		super.onResume();
+		((CustomListAdapter)getListAdapter()).notifyDataSetChanged();
+	}
+
+	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -45,7 +53,10 @@ public class CrimeListFragment extends ListFragment
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
 		Crime c = (Crime)getListAdapter().getItem(position);
-		Toast.makeText(mContext,c.getTitle(), Toast.LENGTH_SHORT).show();
+
+		Intent i = new Intent(mContext, CrimeActivity.class);
+		i.putExtra(CrimeActivity.sTAG_CRIME_UUDI_INTENT_ARG, c.getId());
+		startActivity(i);
 	}
 
 	private static class CustomListAdapter extends ArrayAdapter<Crime>

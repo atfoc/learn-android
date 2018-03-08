@@ -148,6 +148,15 @@ public class CrimeFragment extends Fragment
 			{
 				Log.d("Debug", "user canceld");
 			}
+			else if(DateTimePicker.sRESAULT_CODE_BACK == resultCode)
+			{
+				FragmentManager fm = getActivity().getFragmentManager();
+
+				DateTimePicker f = DateTimePicker.newInstance(mCrime.getDate());
+
+				f.setTargetFragment(CrimeFragment.this, 0);
+				f.show(fm, DateTimePicker.class.getName());
+			}
 		}
 	}
 }

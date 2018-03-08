@@ -27,6 +27,12 @@ public class CrimePickTimeFragment extends DialogFragment
 	public static String sTAG_DATE_RET = CrimePickDateFragment.sTAG_DATE_RET;
 
 	private Date mDate;
+	private  DialogInterface.OnKeyListener mOnKeyListener;
+
+	public CrimePickTimeFragment()
+	{
+		mOnKeyListener = null;
+	}
 
 	public static CrimePickTimeFragment newInstance(Date d)
 	{
@@ -38,6 +44,13 @@ public class CrimePickTimeFragment extends DialogFragment
 		f.setArguments(arg);
 		return f;
 	}
+
+
+	public void setOnKeyListener(DialogInterface.OnKeyListener l)
+	{
+		mOnKeyListener = l;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -57,6 +70,7 @@ public class CrimePickTimeFragment extends DialogFragment
 
 		return new AlertDialog.Builder(getActivity())
 				.setView(v)
+				.setOnKeyListener(mOnKeyListener)
 				.setPositiveButton("Accept", new DialogInterface.OnClickListener()
 				{
 					@Override

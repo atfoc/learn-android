@@ -1,5 +1,6 @@
 package com.example.atfoc.criminalintent;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -20,6 +21,7 @@ import java.util.Date;
 public class DateTimePicker extends DialogFragment
 {
 	public static String sTAG_DATE_ARG = DateTimePicker.class.getName() + ".TAG.DATE.ARG";
+	public static int sRESAULT_CODE_BACK = 201213;
 
 	private Date mDate;
 
@@ -64,13 +66,50 @@ public class DateTimePicker extends DialogFragment
 							CrimePickTimeFragment f = CrimePickTimeFragment.newInstance(mDate);
 
 							f.setTargetFragment(getTargetFragment(), getTargetRequestCode());
+							f.setOnKeyListener(new DialogInterface.OnKeyListener()
+							{
+								@Override
+								public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent)
+								{
+
+									if(keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK)
+									{
+
+										getTargetFragment().onActivityResult(getTargetRequestCode(), sRESAULT_CODE_BACK, null);
+
+										dialogInterface.dismiss();
+
+										return true;
+									}
+
+									return false;
+								}
+							});
 							f.show(getFragmentManager(), CrimePickTimeFragment.class.getName());
 						}
 						else if(1 == i)
 						{
 							CrimePickDateFragment f = CrimePickDateFragment.newInstance(mDate);
 							f.setTargetFragment(getTargetFragment(), getTargetRequestCode());
+							f.setOnKeyListener(new DialogInterface.OnKeyListener()
+							{
+								@Override
+								public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent)
+								{
 
+									if(keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK)
+									{
+
+										getTargetFragment().onActivityResult(getTargetRequestCode(), sRESAULT_CODE_BACK, null);
+
+										dialogInterface.dismiss();
+
+										return true;
+									}
+
+									return false;
+								}
+							});
 							f.show(getFragmentManager(), CrimePickDateFragment.class.getName());
 						}
 					}

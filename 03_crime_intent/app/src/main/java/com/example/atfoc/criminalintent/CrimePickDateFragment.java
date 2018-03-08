@@ -38,6 +38,13 @@ public class CrimePickDateFragment extends DialogFragment
 	}
 
 	private Date mDate;
+	private DialogInterface.OnKeyListener mOnKeyListener;
+
+
+	public CrimePickDateFragment()
+	{
+		mOnKeyListener = null;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -45,6 +52,11 @@ public class CrimePickDateFragment extends DialogFragment
 		super.onCreate(savedInstanceState);
 
 		mDate = (Date)getArguments().getSerializable(sTAG_DATE_ARG);
+	}
+
+	public void setOnKeyListener(DialogInterface.OnKeyListener l)
+	{
+		mOnKeyListener = l;
 	}
 
 
@@ -60,6 +72,7 @@ public class CrimePickDateFragment extends DialogFragment
 		return new AlertDialog.Builder(getActivity())
 				.setTitle("Crime Date")
 				.setView(v)
+				.setOnKeyListener(mOnKeyListener)
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener()
 				{
 					@Override

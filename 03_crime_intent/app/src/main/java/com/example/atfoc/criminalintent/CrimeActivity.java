@@ -3,6 +3,7 @@ package com.example.atfoc.criminalintent;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -19,18 +20,17 @@ public class CrimeActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_fragment_host);
+		ViewPager mVp = new ViewPager(this);
+		mVp.setId(R.id.activity_crime_page_viewer);
+		setContentView(mVp);
 
 		fc = getFragmentManager();
+		mVp.setAdapter(new CrimePagerAdapter(fc, this));
 
-		Fragment f = fc.findFragmentById(R.id.activity_crime_fragment_container);
+		Intent i = getIntent();
+		UUID crimeId = (UUID)i.getSerializableExtra(sTAG_CRIME_UUDI_INTENT_ARG);
 
-		if(null == f)
-		{
-			Intent i = getIntent();
-			UUID crimeId = (UUID)i.getSerializableExtra(sTAG_CRIME_UUDI_INTENT_ARG);
-			f = CrimeFragment.newInstance(crimeId);
-			fc.beginTransaction().add(R.id.activity_crime_fragment_container, f).commit();
-		}
+		mVp.setCurrentItem(CrimeLab.getInstance(this).getIndexFromId(crimeId));
+
 	}
 }
